@@ -1,0 +1,975 @@
+{% extends 'nails/base.html' %}
+
+{% block content %}
+<style>
+    /* Hero Section */
+    .hero {
+        background: linear-gradient(135deg, rgba(255,107,149,0.9), rgba(108,92,231,0.9)), url('https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-4.0.3') center/cover;
+        color: var(--white);
+        padding: 8rem 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        animation: float 20s linear infinite;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0) translateX(0); }
+        100% { transform: translateY(-100px) translateX(-100px); }
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero p {
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-btn {
+        background: var(--white);
+        color: var(--primary);
+        font-size: 1.1rem;
+        padding: 15px 40px;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+        70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+    }
+
+    .hero-btn:hover {
+        background: var(--light);
+        transform: translateY(-3px);
+        animation: none;
+    }
+
+    /* MAGNIFICENT FEATURED DESIGNS SECTION */
+    .featured-section {
+        padding: 6rem 0;
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .featured-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 20% 80%, rgba(255,107,149,0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(108,92,231,0.1) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(255,107,149,0.05) 0%, transparent 50%);
+        animation: sparkle 8s ease-in-out infinite;
+    }
+
+    @keyframes sparkle {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 4rem;
+        position: relative;
+    }
+
+    .section-title {
+        font-size: 3.5rem;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        border-radius: 2px;
+    }
+
+    .section-subtitle {
+        font-size: 1.3rem;
+        color: var(--text);
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    /* 3D Carousel Styles */
+    .designs-carousel {
+        position: relative;
+        height: 600px;
+        perspective: 1200px;
+        margin: 0 auto;
+        max-width: 1200px;
+    }
+
+    .carousel-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .design-item {
+        position: absolute;
+        width: 350px;
+        height: 450px;
+        left: 50%;
+        top: 50%;
+        margin-left: -175px;
+        margin-top: -225px;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 
+            0 25px 50px rgba(0,0,0,0.25),
+            0 0 0 1px rgba(255,255,255,0.1);
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        cursor: pointer;
+        background: var(--white);
+    }
+
+    .design-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+    }
+
+    .design-item:hover::before {
+        transform: translateX(100%);
+    }
+
+    .design-image {
+        width: 100%;
+        height: 70%;
+        object-fit: cover;
+        transition: transform 0.8s ease;
+    }
+
+    .design-item:hover .design-image {
+        transform: scale(1.1);
+    }
+
+    .design-content {
+        padding: 1.5rem;
+        background: var(--white);
+        height: 30%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .design-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--dark);
+        margin-bottom: 0.5rem;
+        transition: color 0.3s ease;
+    }
+
+    .design-description {
+        color: var(--text);
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin-bottom: 1rem;
+    }
+
+    .design-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    .carousel-nav {
+        position: absolute;
+        bottom: -80px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 1rem;
+        z-index: 10;
+    }
+
+    .nav-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .nav-btn:hover {
+        transform: translateY(-3px) scale(1.1);
+        box-shadow: 0 8px 25px rgba(255,107,149,0.4);
+    }
+
+    .carousel-dots {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--text);
+        opacity: 0.3;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .dot.active {
+        background: var(--primary);
+        opacity: 1;
+        transform: scale(1.2);
+    }
+
+    /* Design Categories */
+    .design-categories {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin: 3rem 0;
+        flex-wrap: wrap;
+    }
+
+    .category-btn {
+        padding: 0.8rem 1.5rem;
+        background: transparent;
+        border: 2px solid var(--primary);
+        color: var(--primary);
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.9rem;
+    }
+
+    .category-btn.active,
+    .category-btn:hover {
+        background: var(--primary);
+        color: var(--white);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255,107,149,0.3);
+    }
+
+    /* Floating Elements */
+    .floating-elements {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+    }
+
+    .floating-element {
+        position: absolute;
+        font-size: 2rem;
+        opacity: 0.1;
+        animation: floatElement 15s infinite linear;
+    }
+
+    .floating-element:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+    .floating-element:nth-child(2) { top: 20%; right: 15%; animation-delay: -3s; }
+    .floating-element:nth-child(3) { bottom: 30%; left: 20%; animation-delay: -6s; }
+    .floating-element:nth-child(4) { bottom: 15%; right: 25%; animation-delay: -9s; }
+    .floating-element:nth-child(5) { top: 40%; left: 30%; animation-delay: -12s; }
+
+    @keyframes floatElement {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        33% { transform: translateY(-20px) rotate(120deg); }
+        66% { transform: translateY(10px) rotate(240deg); }
+    }
+
+    /* Stats Section */
+    .stats-section {
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        color: var(--white);
+        padding: 4rem 0;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        text-align: center;
+    }
+
+    .stat-item h3 {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-item p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+
+    /* Services Preview */
+    .services-preview {
+        background: var(--light);
+        position: relative;
+    }
+
+    .services-preview::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff6b95' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .service-card {
+        background: var(--white);
+        padding: 2rem;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .service-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: var(--primary);
+        transform: scaleY(0);
+        transition: var(--transition);
+    }
+
+    .service-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .service-card:hover::before {
+        transform: scaleY(1);
+    }
+
+    .service-icon {
+        font-size: 3rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+        transition: var(--transition);
+    }
+
+    .service-card:hover .service-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .service-card h3 {
+        color: var(--dark);
+        margin-bottom: 1rem;
+    }
+
+    .price {
+        font-size: 1.5rem;
+        color: var(--primary);
+        font-weight: bold;
+        margin: 1rem 0;
+        position: relative;
+        display: inline-block;
+    }
+
+    .price::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary);
+        transition: var(--transition);
+    }
+
+    .service-card:hover .price::after {
+        width: 100%;
+    }
+
+    /* Testimonials Section */
+    .testimonials-section {
+        padding: 5rem 0;
+    }
+
+    .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+
+    .testimonial-card {
+        background: var(--white);
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        position: relative;
+    }
+
+    .testimonial-card::before {
+        content: '"';
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        font-size: 4rem;
+        color: rgba(255, 107, 149, 0.2);
+        font-family: Georgia, serif;
+        line-height: 1;
+    }
+
+    .testimonial-content {
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+    }
+
+    .author-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        margin-right: 1rem;
+    }
+
+    .author-info h4 {
+        color: var(--dark);
+        margin-bottom: 0.2rem;
+    }
+
+    .author-info p {
+        font-size: 0.9rem;
+        color: var(--text);
+    }
+
+    /* CTA Section */
+    .cta-section {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        padding: 5rem 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        animation: float 25s linear infinite;
+    }
+
+    .cta-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .cta-section h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .cta-section p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .cta-btn {
+        background: var(--white);
+        color: var(--primary);
+        font-size: 1.1rem;
+        padding: 15px 40px;
+    }
+
+    .cta-btn:hover {
+        background: var(--light);
+        transform: translateY(-3px);
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .hero {
+            padding: 6rem 0;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+        }
+
+        .designs-carousel {
+            height: 500px;
+        }
+
+        .design-item {
+            width: 280px;
+            height: 380px;
+            margin-left: -140px;
+            margin-top: -190px;
+        }
+
+        .services-grid,
+        .testimonials-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero h1 {
+            font-size: 2rem;
+        }
+
+        .hero p {
+            font-size: 1rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+        }
+
+        .designs-carousel {
+            height: 400px;
+        }
+
+        .design-item {
+            width: 250px;
+            height: 350px;
+            margin-left: -125px;
+            margin-top: -175px;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+        }
+
+        .cta-section h2 {
+            font-size: 1.8rem;
+        }
+    }
+</style>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container hero-content">
+        <h1>Artistry at Your Fingertips</h1>
+        <p>Experience premium nail care with custom designs that express your unique style</p>
+        <a href="{% url 'book_appointment' %}" class="btn hero-btn">Book Your Session</a>
+    </div>
+</section>
+
+<!-- MAGNIFICENT Featured Designs Section -->
+<section class="featured-section">
+    <div class="floating-elements">
+        <div class="floating-element">💎</div>
+        <div class="floating-element">✨</div>
+        <div class="floating-element">🌟</div>
+        <div class="floating-element">🎨</div>
+        <div class="floating-element">💫</div>
+    </div>
+    
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Featured Masterpieces</h2>
+            <p class="section-subtitle">Immerse yourself in our gallery of breathtaking nail artistry. Each design tells a unique story of creativity and precision.</p>
+        </div>
+
+        <!-- Design Categories -->
+        <div class="design-categories">
+            <button class="category-btn active" data-category="all">All Designs</button>
+            <button class="category-btn" data-category="elegant">Elegant</button>
+            <button class="category-btn" data-category="bold">Bold & Bright</button>
+            <button class="category-btn" data-category="minimal">Minimalist</button>
+            <button class="category-btn" data-category="artistic">Artistic</button>
+        </div>
+
+        <!-- 3D Carousel -->
+        <div class="designs-carousel">
+            <div class="carousel-container" id="carousel">
+                {% for nail in featured_nails %}
+                <div class="design-item" data-category="{{ nail.category|default:'all' }}">
+                    <img src="{{ nail.image.url }}" alt="{{ nail.title }}" class="design-image">
+                    <div class="design-content">
+                        <h3 class="design-title">{{ nail.title }}</h3>
+                        <p class="design-description">{{ nail.description }}</p>
+                        <div class="design-meta">
+                            <span>Shape: {{ nail.get_nail_shape_display }}</span>
+                            <span>Style: {{ nail.get_nail_style_display }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="design-item" style="position: relative; transform: none; left: 50%;">
+                    <div class="design-content" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+                        <p>No featured designs yet. Check back soon for amazing creations!</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="carousel-nav">
+                <button class="nav-btn prev-btn">←</button>
+                <button class="nav-btn next-btn">→</button>
+            </div>
+            
+            <div class="carousel-dots" id="carouselDots">
+                <!-- Dots will be generated by JavaScript -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>500+</h3>
+                <p>Happy Clients</p>
+            </div>
+            <div class="stat-item">
+                <h3>1000+</h3>
+                <p>Nails Done</p>
+            </div>
+            <div class="stat-item">
+                <h3>50+</h3>
+                <p>Design Styles</p>
+            </div>
+            <div class="stat-item">
+                <h3>5★</h3>
+                <p>Customer Rating</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Preview Section -->
+<section class="section-padding services-preview">
+    <div class="container">
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-subtitle">Professional nail care services tailored to your needs</p>
+        
+        <div class="services-grid">
+            {% for service in services|slice:":4" %}
+            <div class="service-card">
+                <div class="service-icon">💅</div>
+                <h3>{{ service.name }}</h3>
+                <p>{{ service.description|truncatewords:15 }}</p>
+                <div class="price">${{ service.price }}</div>
+                <a href="{% url 'book_appointment' %}" class="btn" style="padding: 10px 25px;">Book Now</a>
+            </div>
+            {% empty %}
+            <div class="text-center" style="grid-column: 1/-1;">
+                <p>No services available yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center" style="margin-top: 3rem;">
+            <a href="{% url 'services' %}" class="btn">View All Services</a>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section">
+    <div class="container">
+        <h2 class="section-title">What Our Clients Say</h2>
+        <p class="section-subtitle">Don't just take our word for it - hear from our satisfied customers</p>
+        
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p>Absolutely love my nails! Anthony is a true artist who pays attention to every detail. I always get compliments wherever I go.</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">S</div>
+                    <div class="author-info">
+                        <h4>Sarah M.</h4>
+                        <p>Regular Client</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p>The best nail experience I've ever had! The salon is clean, the service is exceptional, and my nails always look perfect.</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">J</div>
+                    <div class="author-info">
+                        <h4>Jessica T.</h4>
+                        <p>First Time Client</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-content">
+                    <p>I've been coming to Elegant Nails for over a year now, and I'm always impressed with the creativity and quality of work.</p>
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">M</div>
+                    <div class="author-info">
+                        <h4>Michelle K.</h4>
+                        <p>Loyal Customer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container cta-content">
+        <h2>Ready for Your Transformation?</h2>
+        <p>Book your appointment today and experience the difference</p>
+        <a href="{% url 'book_appointment' %}" class="btn cta-btn">Book Your Appointment</a>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const carousel = document.getElementById('carousel');
+        const items = carousel.querySelectorAll('.design-item');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        const dotsContainer = document.getElementById('carouselDots');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        
+        let currentIndex = 0;
+        const totalItems = items.length;
+        
+        // Create dots
+        items.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.className = `dot ${index === 0 ? 'active' : ''}`;
+            dot.addEventListener('click', () => goToSlide(index));
+            dotsContainer.appendChild(dot);
+        });
+        
+        const dots = document.querySelectorAll('.dot');
+        
+        // Position items in 3D carousel
+        function positionItems() {
+            const angle = 360 / totalItems;
+            
+            items.forEach((item, index) => {
+                const rotateY = angle * index;
+                const translateZ = 400; // 3D depth
+                
+                item.style.transform = `rotateY(${rotateY}deg) translateZ(${translateZ}px)`;
+                item.style.opacity = '1';
+            });
+        }
+        
+        function goToSlide(index) {
+            currentIndex = index;
+            const angle = 360 / totalItems;
+            carousel.style.transform = `rotateY(${-angle * currentIndex}deg)`;
+            
+            // Update dots
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentIndex);
+            });
+        }
+        
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalItems;
+            goToSlide(currentIndex);
+        }
+        
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            goToSlide(currentIndex);
+        }
+        
+        // Event listeners
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+        
+        // Auto-rotate carousel
+        let autoRotate = setInterval(nextSlide, 4000);
+        
+        // Pause auto-rotate on hover
+        carousel.addEventListener('mouseenter', () => {
+            clearInterval(autoRotate);
+        });
+        
+        carousel.addEventListener('mouseleave', () => {
+            autoRotate = setInterval(nextSlide, 4000);
+        });
+        
+        // Category filtering
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const category = this.getAttribute('data-category');
+                
+                // Update active button
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Filter items
+                items.forEach(item => {
+                    if (category === 'all' || item.getAttribute('data-category') === category) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                // Reinitialize carousel with visible items
+                setTimeout(positionItems, 300);
+            });
+        });
+        
+        // Initialize
+        positionItems();
+        
+        // Add scroll animation
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe elements for scroll animations
+        document.querySelectorAll('.design-item, .service-card, .testimonial-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    });
+</script>
+{% endblock %}

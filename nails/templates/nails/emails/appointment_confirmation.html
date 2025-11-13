@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Confirmation - Elegant Nails</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fafafa;
+            padding: 20px;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .email-header {
+            background: linear-gradient(135deg, #ff6b95 0%, #6c5ce7 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .logo-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .confirmation-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .email-body {
+            padding: 40px 30px;
+        }
+        
+        .greeting {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            color: #2d3436;
+        }
+        
+        .appointment-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 4px solid #ff6b95;
+        }
+        
+        .appointment-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: #2d3436;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #636e72;
+        }
+        
+        .detail-value {
+            font-weight: 500;
+            color: #2d3436;
+            text-align: right;
+        }
+        
+        .special-requests {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .reminders {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+        
+        .reminders h3 {
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+        
+        .reminders ul {
+            padding-left: 20px;
+        }
+        
+        .reminders li {
+            margin-bottom: 8px;
+        }
+        
+        .contact-info {
+            text-align: center;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin: 25px 0;
+        }
+        
+        .contact-item {
+            display: inline-block;
+            margin: 0 15px;
+            color: #636e72;
+        }
+        
+        .cta-button {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #ff6b95 0%, #6c5ce7 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            text-align: center;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .email-footer {
+            background: #2d3436;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .social-links {
+            margin: 20px 0;
+        }
+        
+        .social-link {
+            display: inline-block;
+            margin: 0 10px;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .copyright {
+            opacity: 0.7;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 600px) {
+            .email-body {
+                padding: 25px 20px;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+            }
+            
+            .detail-value {
+                text-align: left;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="email-header">
+            <div class="logo">Elegant Nails</div>
+            <div class="logo-subtitle">Artistry at Your Fingertips</div>
+            <div class="confirmation-badge">✅ Appointment Confirmed</div>
+        </div>
+        
+        <!-- Body -->
+        <div class="email-body">
+            <div class="greeting">
+                Hello <strong>{{ appointment.client_name }}</strong>,
+            </div>
+            
+            <p>Thank you for choosing Elegant Nails! We're thrilled to create beautiful nails for you and can't wait to bring your vision to life. Your appointment has been confirmed with the following details:</p>
+            
+            <!-- Appointment Details Card -->
+            <div class="appointment-card">
+                <div class="appointment-title">📅 Appointment Details</div>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Service:</span>
+                    <span class="detail-value">{{ appointment.service.name }}</span>
+                </div>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Date:</span>
+                    <span class="detail-value">{{ appointment.appointment_date|date:"F j, Y" }}</span>
+                </div>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Time:</span>
+                    <span class="detail-value">{{ appointment.appointment_time|time:"g:i A" }}</span>
+                </div>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Duration:</span>
+                    <span class="detail-value">{{ appointment.duration }} minutes</span>
+                </div>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Total:</span>
+                    <span class="detail-value">${{ appointment.service.price }}</span>
+                </div>
+                
+                {% if appointment.special_requests %}
+                <div class="special-requests">
+                    <strong>Your Special Requests:</strong><br>
+                    {{ appointment.special_requests }}
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Important Reminders -->
+            <div class="reminders">
+                <h3>🌟 Important Reminders</h3>
+                <ul>
+                    <li>Please arrive 5-10 minutes before your scheduled appointment</li>
+                    <li>Bring any reference photos or inspiration for your nail design</li>
+                    <li>Let us know 24 hours in advance if you need to reschedule</li>
+                    <li>Come with clean, polish-free nails for best results</li>
+                </ul>
+            </div>
+            
+            <!-- Contact Information -->
+            <div class="contact-info">
+                <h3>📞 Need to Make Changes?</h3>
+                <p>Contact us if you need to reschedule or have any questions:</p>
+                <div class="contact-item">📱 (555) 123-4567</div>
+                <div class="contact-item">✉️ hello@elegantnails.com</div>
+            </div>
+            
+            <!-- CTA Button -->
+            <a href="#" class="cta-button">View Our Portfolio</a>
+            
+            <p style="text-align: center; margin-top: 20px;">
+                We're looking forward to pampering you!<br>
+                <em>– The Elegant Nails Team</em>
+            </p>
+        </div>
+        
+        <!-- Footer -->
+        <div class="email-footer">
+            <div class="social-links">
+                <a href="#" class="social-link">Instagram</a>
+                <a href="#" class="social-link">Facebook</a>
+                <a href="#" class="social-link">TikTok</a>
+            </div>
+            <div class="copyright">
+                &copy; 2024 Elegant Nails. All rights reserved.<br>
+                <small>This email was sent to {{ appointment.client_email }}</small>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

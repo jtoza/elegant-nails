@@ -1,0 +1,157 @@
+{% extends 'nails/base.html' %}
+
+{% block content %}
+<div class="booking-container">
+    <h2>Book Your Appointment</h2>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    
+    <form method="post" id="booking-form">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            {{ form.client_name.label_tag }}
+            {{ form.client_name }}
+            {{ form.client_name.errors }}
+        </div>
+        
+        <div class="form-group">
+            {{ form.client_email.label_tag }}
+            {{ form.client_email }}
+            {{ form.client_email.errors }}
+        </div>
+        
+        <div class="form-group">
+            {{ form.client_phone.label_tag }}
+            {{ form.client_phone }}
+            {{ form.client_phone.errors }}
+        </div>
+        
+        <div class="form-group">
+            {{ form.service.label_tag }}
+            {{ form.service }}
+            {{ form.service.errors }}
+        </div>
+        
+        <div class="form-group">
+            {{ form.appointment_date.label_tag }}
+            {{ form.appointment_date }}
+            {{ form.appointment_date.errors }}
+        </div>
+        
+        <div class="form-group">
+            {{ form.appointment_time.label_tag }}
+            {{ form.appointment_time }}
+            {{ form.appointment_time.errors }}
+        </div>
+        
+        <div class="form-group">
+            {{ form.special_requests.label_tag }}
+            {{ form.special_requests }}
+            {{ form.special_requests.errors }}
+        </div>
+        
+        <button type="submit" class="btn-book">Book Appointment</button>
+    </form>
+</div>
+
+<style>
+.booking-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn-book {
+    background-color: #ff6b95;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-book:hover {
+    background-color: #e55a81;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+</style>
+
+<script>
+// JavaScript to handle dynamic time slot loading
+document.addEventListener('DOMContentLoaded', function() {
+    const serviceSelect = document.querySelector('#id_service');
+    const dateSelect = document.querySelector('#id_appointment_date');
+    const timeSelect = document.querySelector('#id_appointment_time');
+    
+    function loadAvailableTimes() {
+        const selectedDate = dateSelect.value;
+        const serviceId = serviceSelect.value;
+        
+        if (selectedDate && serviceId) {
+            fetch(`/get-available-times/?date=${selectedDate}&service_id=${serviceId}`)
+                .then(response => response.json())
+                .then(data => {
+                    timeSelect.innerHTML = '';
+                    if (data.available_times && data.available_times.length > 0) {
+                        data.available_times.forEach(time => {
+                            const option = document.createElement('option');
+                            option.value = time;
+                            option.textContent = time;
+                            timeSelect.appendChild(option);
+                        });
+                    } else {
+                        const option = document.createElement('option');
+                        option.textContent = 'No available times';
+                        timeSelect.appendChild(option);
+                    }
+                });
+        }
+    }
+    
+    serviceSelect.addEventListener('change', loadAvailableTimes);
+    dateSelect.addEventListener('change', loadAvailableTimes);
+});
+</script>
+{% endblock %}

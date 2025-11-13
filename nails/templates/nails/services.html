@@ -1,0 +1,650 @@
+{% extends 'nails/base.html' %}
+
+{% block content %}
+<style>
+    .services-hero {
+        background: linear-gradient(135deg, rgba(108,92,231,0.9), rgba(255,107,149,0.9)), url('https://images.unsplash.com/photo-1607778783909-0bf6509c10b6?ixlib=rb-4.0.3') center/cover;
+        color: var(--white);
+        padding: 6rem 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .services-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        animation: float 20s linear infinite;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0) translateX(0); }
+        100% { transform: translateY(-100px) translateX(-100px); }
+    }
+
+    .services-hero-content {
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .services-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2.5rem;
+        margin: 4rem 0;
+    }
+
+    .service-detail-card {
+        background: var(--white);
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+        text-align: center;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .service-detail-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        transform: scaleX(0);
+        transition: var(--transition);
+    }
+
+    .service-detail-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--primary);
+        box-shadow: 0 20px 40px rgba(255,107,149,0.25);
+    }
+
+    .service-detail-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .service-detail-card .icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        display: inline-block;
+        transition: var(--transition);
+    }
+
+    .service-detail-card:hover .icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .service-detail-card h3 {
+        color: var(--dark);
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+    }
+
+    .service-detail-card h3::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 3px;
+        background: var(--primary);
+        transition: var(--transition);
+    }
+
+    .service-detail-card:hover h3::after {
+        width: 60px;
+    }
+
+    .service-detail-card .price {
+        font-size: 2.5rem;
+        color: var(--primary);
+        font-weight: bold;
+        margin: 1.5rem 0;
+        position: relative;
+        display: inline-block;
+    }
+
+    .service-detail-card .price::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: -10px;
+        width: 0;
+        height: 2px;
+        background: var(--primary);
+        transition: var(--transition);
+    }
+
+    .service-detail-card:hover .price::before {
+        width: 20px;
+    }
+
+    .service-detail-card .duration {
+        color: var(--text);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .service-features {
+        list-style: none;
+        text-align: left;
+        margin: 2rem 0;
+        padding: 0;
+    }
+
+    .service-features li {
+        padding: 0.8rem 0;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        transition: var(--transition);
+    }
+
+    .service-features li:hover {
+        transform: translateX(5px);
+        color: var(--primary);
+    }
+
+    .service-features li:before {
+        content: "✓";
+        color: var(--primary);
+        font-weight: bold;
+        margin-right: 1rem;
+        font-size: 1.2rem;
+        transition: var(--transition);
+    }
+
+    .service-features li:hover:before {
+        transform: scale(1.2);
+    }
+
+    .service-detail-card .btn {
+        width: 100%;
+        margin-top: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .service-detail-card .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: var(--transition);
+    }
+
+    .service-detail-card .btn:hover::before {
+        left: 100%;
+    }
+
+    /* Popular Service Badge */
+    .popular-badge {
+        position: absolute;
+        top: 20px;
+        right: -30px;
+        background: var(--secondary);
+        color: white;
+        padding: 8px 40px;
+        transform: rotate(45deg);
+        font-size: 0.8rem;
+        font-weight: bold;
+        box-shadow: 0 2px 10px rgba(108,92,231,0.3);
+    }
+
+    /* Service Categories */
+    .service-categories {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin: 2rem 0 3rem;
+    }
+
+    .category-btn {
+        padding: 0.8rem 1.5rem;
+        background: var(--white);
+        border: 2px solid var(--primary);
+        color: var(--primary);
+        border-radius: 25px;
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 600;
+    }
+
+    .category-btn.active,
+    .category-btn:hover {
+        background: var(--primary);
+        color: var(--white);
+        transform: translateY(-2px);
+    }
+
+    /* Service Comparison */
+    .comparison-section {
+        background: var(--light);
+        padding: 5rem 0;
+        margin-top: 4rem;
+    }
+
+    .comparison-table {
+        background: var(--white);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        margin-top: 2rem;
+    }
+
+    .comparison-header {
+        display: grid;
+        grid-template-columns: 2fr repeat(3, 1fr);
+        background: var(--primary);
+        color: var(--white);
+        padding: 1.5rem;
+        font-weight: bold;
+    }
+
+    .comparison-row {
+        display: grid;
+        grid-template-columns: 2fr repeat(3, 1fr);
+        padding: 1.2rem 1.5rem;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        transition: var(--transition);
+    }
+
+    .comparison-row:hover {
+        background: rgba(255,107,149,0.05);
+    }
+
+    .comparison-row:last-child {
+        border-bottom: none;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+        padding: 5rem 0;
+    }
+
+    .faq-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .faq-item {
+        background: var(--white);
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+    }
+
+    .faq-question {
+        padding: 1.5rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: between;
+        align-items: center;
+        font-weight: 600;
+        transition: var(--transition);
+    }
+
+    .faq-question:hover {
+        background: rgba(255,107,149,0.05);
+    }
+
+    .faq-question::after {
+        content: '+';
+        font-size: 1.5rem;
+        transition: var(--transition);
+    }
+
+    .faq-item.active .faq-question::after {
+        transform: rotate(45deg);
+    }
+
+    .faq-answer {
+        padding: 0 1.5rem;
+        max-height: 0;
+        overflow: hidden;
+        transition: var(--transition);
+    }
+
+    .faq-item.active .faq-answer {
+        padding: 0 1.5rem 1.5rem;
+        max-height: 500px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .services-hero {
+            padding: 4rem 0;
+        }
+
+        .services-container {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .service-detail-card {
+            padding: 2rem;
+        }
+
+        .comparison-header,
+        .comparison-row {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .comparison-header div:nth-child(3),
+        .comparison-header div:nth-child(4),
+        .comparison-row div:nth-child(3),
+        .comparison-row div:nth-child(4) {
+            display: none;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .service-detail-card {
+            padding: 1.5rem;
+        }
+
+        .service-detail-card .icon {
+            font-size: 3rem;
+        }
+
+        .service-detail-card h3 {
+            font-size: 1.5rem;
+        }
+
+        .service-detail-card .price {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<!-- Services Hero -->
+<section class="services-hero">
+    <div class="container services-hero-content">
+        <h1 class="section-title" style="color: white; margin-bottom: 1rem;">Our Premium Services</h1>
+        <p class="section-subtitle" style="color: white; opacity: 0.9; max-width: 600px; margin: 0 auto 2rem;">
+            Experience luxury nail care with our expertly crafted services
+        </p>
+        <a href="{% url 'book_appointment' %}" class="btn" style="background: var(--white); color: var(--primary);">
+            Book Your Appointment
+        </a>
+    </div>
+</section>
+
+<!-- Service Categories -->
+<section class="section-padding">
+    <div class="container">
+        <div class="service-categories">
+            <button class="category-btn active" data-category="all">All Services</button>
+            <button class="category-btn" data-category="manicure">Manicures</button>
+            <button class="category-btn" data-category="pedicure">Pedicures</button>
+            <button class="category-btn" data-category="enhancement">Enhancements</button>
+            <button class="category-btn" data-category="art">Nail Art</button>
+        </div>
+
+        <!-- Services List -->
+        <div class="services-container">
+            {% for service in services %}
+            <div class="service-detail-card" data-category="{{ service.category|default:'all'|lower }}">
+                {% if forloop.first %}
+                <div class="popular-badge">MOST POPULAR</div>
+                {% endif %}
+                
+                <div class="icon">
+                    {% if "manicure" in service.name|lower %}💅
+                    {% elif "pedicure" in service.name|lower %}🦶
+                    {% elif "gel" in service.name|lower %}✨
+                    {% elif "acrylic" in service.name|lower %}🌟
+                    {% elif "art" in service.name|lower %}🎨
+                    {% else %}💫
+                    {% endif %}
+                </div>
+                
+                <h3>{{ service.name }}</h3>
+                <p>{{ service.description }}</p>
+                
+                <div class="price">${{ service.price }}</div>
+                <div class="duration">
+                    <span>⏱️</span>
+                    {{ service.duration }} minutes
+                </div>
+                
+                <ul class="service-features">
+                    <li>Premium quality products</li>
+                    <li>Sanitary & safe environment</li>
+                    <li>Expert craftsmanship</li>
+                    <li>Custom design options</li>
+                    {% if "gel" in service.name|lower or "acrylic" in service.name|lower %}
+                    <li>Long-lasting results</li>
+                    {% endif %}
+                    {% if "art" in service.name|lower %}
+                    <li>Unlimited design creativity</li>
+                    {% endif %}
+                </ul>
+                
+                <a href="{% url 'book_appointment' %}" class="btn">Book This Service</a>
+            </div>
+            {% empty %}
+            <div class="text-center" style="grid-column: 1/-1;">
+                <p>No services available at the moment. Please check back later.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Service Comparison Section -->
+<section class="comparison-section">
+    <div class="container">
+        <h2 class="section-title">Service Comparison</h2>
+        <p class="section-subtitle">Find the perfect service for your needs</p>
+        
+        <div class="comparison-table">
+            <div class="comparison-header">
+                <div>Service Features</div>
+                <div>Basic Manicure</div>
+                <div>Gel Manicure</div>
+                <div>Full Set</div>
+            </div>
+            
+            <div class="comparison-row">
+                <div>Duration</div>
+                <div>30 min</div>
+                <div>45 min</div>
+                <div>90 min</div>
+            </div>
+            
+            <div class="comparison-row">
+                <div>Longevity</div>
+                <div>3-5 days</div>
+                <div>2-3 weeks</div>
+                <div>3-4 weeks</div>
+            </div>
+            
+            <div class="comparison-row">
+                <div>Shine Finish</div>
+                <div>✓</div>
+                <div>✓✓</div>
+                <div>✓✓✓</div>
+            </div>
+            
+            <div class="comparison-row">
+                <div>Nail Strengthening</div>
+                <div>-</div>
+                <div>✓</div>
+                <div>✓✓</div>
+            </div>
+            
+            <div class="comparison-row">
+                <div>Design Options</div>
+                <div>Basic</div>
+                <div>Standard</div>
+                <div>Premium</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section">
+    <div class="container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle">Everything you need to know about our services</p>
+        
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">How long do your services typically last?</div>
+                <div class="faq-answer">
+                    <p>Our services are designed for longevity. A basic manicure lasts 3-5 days, gel manicures 2-3 weeks, and acrylic sets 3-4 weeks with proper care.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Do you use quality products?</div>
+                <div class="faq-answer">
+                    <p>Absolutely! We only use premium, professional-grade products that are safe, durable, and gentle on your nails. All our tools are sterilized between clients.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Can I customize my nail design?</div>
+                <div class="faq-answer">
+                    <p>Yes! We specialize in custom designs. Bring your inspiration or work with our artists to create a unique look that expresses your personal style.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">How far in advance should I book?</div>
+                <div class="faq-answer">
+                    <p>We recommend booking at least 3-5 days in advance, especially for weekends. For intricate designs, allow extra time for consultation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Final CTA -->
+<section class="section-padding" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+    <div class="container text-center">
+        <h2 style="color: white; font-size: 2.5rem; margin-bottom: 1rem;">Ready to Transform Your Nails?</h2>
+        <p style="color: white; font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">
+            Book your appointment today and experience the Elegant Nails difference
+        </p>
+        <a href="{% url 'book_appointment' %}" class="btn" style="background: var(--white); color: var(--primary); font-size: 1.1rem; padding: 15px 40px;">
+            Book Now
+        </a>
+    </div>
+</section>
+
+<script>
+    // Service category filtering
+    document.addEventListener('DOMContentLoaded', function() {
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const serviceCards = document.querySelectorAll('.service-detail-card');
+        
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                const category = this.getAttribute('data-category');
+                
+                // Filter service cards
+                serviceCards.forEach(card => {
+                    if (category === 'all' || card.getAttribute('data-category') === category) {
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 100);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+        
+        // FAQ accordion functionality
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', function() {
+                // Close all other items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+        
+        // Add scroll animation to service cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Initially set cards for animation
+        serviceCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            card.style.transitionDelay = `${index * 0.1}s`;
+            
+            observer.observe(card);
+        });
+    });
+</script>
+{% endblock %}

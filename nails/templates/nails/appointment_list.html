@@ -1,0 +1,404 @@
+{% extends 'nails/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .appointments-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .filters-card {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        margin-bottom: 30px;
+    }
+
+    .filter-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr auto;
+        gap: 15px;
+        align-items: end;
+    }
+
+    @media (max-width: 968px) {
+        .filter-form {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .form-group {
+        margin-bottom: 0;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #2d3436;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+
+    .form-control:focus {
+        border-color: #ff6b95;
+        outline: none;
+    }
+
+    .btn-filter {
+        background: #ff6b95;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .btn-filter:hover {
+        background: #e55a81;
+    }
+
+    .appointments-table {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .table-header {
+        background: #f8f9fa;
+        padding: 20px;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .table-content {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background: #f8f9fa;
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+        color: #2d3436;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    td {
+        padding: 15px;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    tr:hover {
+        background: #f8f9fa;
+    }
+
+    .client-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .client-name {
+        font-weight: 600;
+        color: #2d3436;
+    }
+
+    .client-contact {
+        font-size: 0.9rem;
+        color: #636e72;
+    }
+
+    .appointment-date {
+        font-weight: 600;
+        color: #2d3436;
+    }
+
+    .appointment-time {
+        color: #636e72;
+        font-size: 0.9rem;
+    }
+
+    .service-info {
+        font-weight: 500;
+        color: #2d3436;
+    }
+
+    .service-price {
+        color: #ff6b95;
+        font-weight: 600;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-confirmed { background: #d4edda; color: #155724; }
+    .status-completed { background: #d1ecf1; color: #0c5460; }
+    .status-cancelled { background: #f8d7da; color: #721c24; }
+
+    .action-buttons {
+        display: flex;
+        gap: 5px;
+    }
+
+    .btn-action {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .btn-view { background: #17a2b8; color: white; }
+    .btn-edit { background: #ffc107; color: #212529; }
+    .btn-confirm { background: #28a745; color: white; }
+    .btn-complete { background: #6c5ce7; color: white; }
+    .btn-cancel { background: #dc3545; color: white; }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+        gap: 10px;
+    }
+
+    .page-link {
+        padding: 8px 16px;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        text-decoration: none;
+        color: #ff6b95;
+        font-weight: 500;
+    }
+
+    .page-link:hover {
+        background: #ff6b95;
+        color: white;
+    }
+
+    .page-current {
+        background: #ff6b95;
+        color: white;
+        border-color: #ff6b95;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #636e72;
+    }
+
+    .empty-state .icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        opacity: 0.5;
+    }
+
+    .results-count {
+        color: #636e72;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="appointments-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>All Appointments 📋</h1>
+        <p>Manage and view all customer bookings in one place</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-card">
+        <form method="get" class="filter-form">
+            <div class="form-group">
+                <label for="search">Search Clients</label>
+                <input type="text" id="search" name="search" class="form-control" 
+                       placeholder="Search by name, email, or phone..." value="{{ search_query }}">
+            </div>
+            
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status" class="form-control">
+                    <option value="">All Statuses</option>
+                    {% for value, label in status_choices %}
+                    <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>
+                        {{ label }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" class="form-control" value="{{ date_filter }}">
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn-filter">Apply Filters</button>
+            </div>
+        </form>
+        
+        {% if status_filter or date_filter or search_query %}
+        <div style="margin-top: 15px;">
+            <a href="{% url 'appointment_list' %}" class="btn-action" style="background: #6c757d; color: white; padding: 8px 15px;">
+                Clear Filters
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Appointments Table -->
+    <div class="appointments-table">
+        <div class="table-header">
+            <h3 style="margin: 0; color: #2d3436;">
+                {% if appointments.paginator.count == 0 %}
+                    No Appointments Found
+                {% else %}
+                    {{ appointments.paginator.count }} Appointment{{ appointments.paginator.count|pluralize }} Found
+                {% endif %}
+            </h3>
+        </div>
+
+        <div class="table-content">
+            {% if appointments %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>Date & Time</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointments %}
+                    <tr>
+                        <td>
+                            <div class="client-info">
+                                <span class="client-name">{{ appointment.client_name }}</span>
+                                <span class="client-contact">
+                                    {{ appointment.client_phone }} • {{ appointment.client_email }}
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="appointment-date">
+                                {{ appointment.appointment_date|date:"M j, Y" }}
+                            </div>
+                            <div class="appointment-time">
+                                {{ appointment.appointment_time|time:"g:i A" }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="service-info">{{ appointment.service.name }}</div>
+                            <div class="service-price">${{ appointment.service.price }}</div>
+                        </td>
+                        <td>
+                            <span class="status-badge status-{{ appointment.status|lower }}">
+                                {{ appointment.get_status_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <a href="{% url 'appointment_detail' appointment.id %}" class="btn-action btn-view">
+                                    View
+                                </a>
+                                
+                                {% if appointment.status == 'PENDING' %}
+                                <form method="post" action="{% url 'update_appointment_status' appointment.id %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="CONFIRMED">
+                                    <button type="submit" class="btn-action btn-confirm">Confirm</button>
+                                </form>
+                                {% endif %}
+                                
+                                {% if appointment.status != 'COMPLETED' and appointment.status != 'CANCELLED' %}
+                                <form method="post" action="{% url 'update_appointment_status' appointment.id %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="COMPLETED">
+                                    <button type="submit" class="btn-action btn-complete">Complete</button>
+                                </form>
+                                {% endif %}
+                                
+                                {% if appointment.status != 'CANCELLED' %}
+                                <form method="post" action="{% url 'update_appointment_status' appointment.id %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="CANCELLED">
+                                    <button type="submit" class="btn-action btn-cancel">Cancel</button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">
+                <div class="icon">📅</div>
+                <h3>No appointments found</h3>
+                <p>Try adjusting your filters or check back later for new bookings.</p>
+                <a href="{% url 'appointment_list' %}" class="btn" style="margin-top: 15px;">View All Appointments</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    {% if appointments.paginator.num_pages > 1 %}
+    <div class="pagination">
+        {% if appointments.has_previous %}
+            <a href="?page=1{% if status_filter %}&status={{ status_filter }}{% endif %}{% if date_filter %}&date={{ date_filter }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}" class="page-link">First</a>
+            <a href="?page={{ appointments.previous_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if date_filter %}&date={{ date_filter }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}" class="page-link">Previous</a>
+        {% endif %}
+
+        {% for num in appointments.paginator.page_range %}
+            {% if appointments.number == num %}
+                <span class="page-link page-current">{{ num }}</span>
+            {% elif num > appointments.number|add:'-3' and num < appointments.number|add:'3' %}
+                <a href="?page={{ num }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if date_filter %}&date={{ date_filter }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}" class="page-link">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if appointments.has_next %}
+            <a href="?page={{ appointments.next_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if date_filter %}&date={{ date_filter }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}" class="page-link">Next</a>
+            <a href="?page={{ appointments.paginator.num_pages }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if date_filter %}&date={{ date_filter }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}" class="page-link">Last</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
