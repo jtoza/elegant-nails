@@ -1,5 +1,8 @@
 from django.urls import path
 from . import views
+from django.views.generic import TemplateView
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     # Public URLs
@@ -21,4 +24,10 @@ urlpatterns = [
          views.update_appointment_status, name='update_appointment_status'),
     path('dashboard/clients/', views.client_list, name='client_list'),
     path('dashboard/analytics/', views.analytics, name='analytics'),
+    path('offline/', TemplateView.as_view(template_name='offline.html'), name='offline'),
+    path(
+        'serviceworker.js', 
+        RedirectView.as_view(url=staticfiles_storage.url('sw.js')),
+        name='serviceworker'
+    ),
 ]

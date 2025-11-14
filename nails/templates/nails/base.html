@@ -4,6 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elegant Nails by ANTHONY</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#ff6b95">
+    <meta name="description" content="Premium nail care with custom designs that express your unique style">
+    <meta name="keywords" content="nails, manicure, pedicure, nail art, beauty salon">
+    
+    <!-- Apple PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Elegant Nails">
+    
+    <!-- Microsoft PWA Meta Tags -->
+    <meta name="msapplication-TileColor" content="#ff6b95">
+    <meta name="msapplication-config" content="{% static 'browserconfig.xml' %}">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/png" href="{% static 'icons/icon-192x192.png' %}">
+    <link rel="shortcut icon" href="{% static 'icons/icon-192x192.png' %}">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="{% static 'icons/icon-192x192.png' %}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static 'icons/icon-152x152.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'icons/icon-192x192.png' %}">
+    <link rel="apple-touch-icon" sizes="167x167" href="{% static 'icons/icon-192x192.png' %}">
+    
     <style>
         * {
             margin: 0;
@@ -207,6 +235,58 @@
             background: #5649c0 !important;
         }
 
+        /* Install App Button */
+        .install-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: var(--transition);
+            display: none;
+            align-items: center;
+            gap: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        .install-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 107, 149, 0.4);
+        }
+
+        .install-btn.installed {
+            background: var(--secondary);
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 4px 20px rgba(255, 107, 149, 0.4); }
+            50% { box-shadow: 0 4px 30px rgba(255, 107, 149, 0.8); }
+            100% { box-shadow: 0 4px 20px rgba(255, 107, 149, 0.4); }
+        }
+
+        /* PWA Standalone Mode Styles */
+        body.standalone {
+            margin-top: 0;
+        }
+
+        body.standalone header {
+            padding-top: env(safe-area-inset-top);
+        }
+
+        body.standalone main {
+            margin-top: 70px;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
         /* Responsive Styles */
         @media (max-width: 768px) {
             .nav-links {
@@ -264,6 +344,13 @@
             .section-padding {
                 padding: 3rem 0;
             }
+
+            .install-btn {
+                bottom: 80px;
+                right: 15px;
+                font-size: 12px;
+                padding: 10px 16px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -283,10 +370,46 @@
             .section-title {
                 font-size: 1.8rem;
             }
+
+            .install-btn {
+                bottom: 70px;
+                right: 10px;
+                padding: 8px 14px;
+            }
+        }
+
+        /* Offline Indicator */
+        .offline-indicator {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff6b6b;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            z-index: 999;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
         }
     </style>
 </head>
 <body>
+    <!-- Offline Indicator -->
+    <div class="offline-indicator" id="offlineIndicator">
+        <span>📶</span>
+        You're offline
+    </div>
+
+    <!-- Install App Button -->
+    <button id="installButton" class="install-btn">
+        <span>📱</span>
+        Install App
+    </button>
+
     <header>
         <div class="nav-container">
             <a href="{% url 'home' %}" class="logo">Elegant<span>Nails</span></a>
@@ -356,6 +479,90 @@
                 navLinks.classList.remove('active');
             });
         });
+
+        // PWA Installation
+        let deferredPrompt;
+        const installButton = document.getElementById('installButton');
+        const offlineIndicator = document.getElementById('offlineIndicator');
+
+        // Before install prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installButton.style.display = 'flex';
+            
+            // Auto-show install prompt after 5 seconds
+            setTimeout(() => {
+                if (deferredPrompt && installButton.style.display === 'flex') {
+                    showInstallPrompt();
+                }
+            }, 5000);
+        });
+
+        // Install button handler
+        installButton.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                showInstallPrompt();
+            }
+        });
+
+        function showInstallPrompt() {
+            installButton.style.display = 'none';
+            deferredPrompt.prompt();
+            
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                    installButton.innerHTML = '<span>✅</span> Installed!';
+                    installButton.classList.add('installed');
+                    installButton.style.display = 'flex';
+                    setTimeout(() => {
+                        installButton.style.display = 'none';
+                    }, 3000);
+                } else {
+                    console.log('User dismissed the install prompt');
+                    installButton.style.display = 'none';
+                }
+                deferredPrompt = null;
+            });
+        }
+
+        // Detect if app is launched from home screen
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                document.body.classList.add('standalone');
+                console.log('Launched as PWA');
+            }
+        });
+
+        // Online/Offline detection
+        window.addEventListener('online', () => {
+            offlineIndicator.style.display = 'none';
+            console.log('You are online');
+        });
+
+        window.addEventListener('offline', () => {
+            offlineIndicator.style.display = 'flex';
+            console.log('You are offline');
+        });
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('{% static "sw.js" %}')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+
+        // Check initial online status
+        if (!navigator.onLine) {
+            offlineIndicator.style.display = 'flex';
+        }
     </script>
 </body>
 </html>

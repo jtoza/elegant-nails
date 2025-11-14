@@ -1,0 +1,44 @@
+{% extends 'nails/base.html' %}
+
+{% block content %}
+<style>
+    .offline-container {
+        text-align: center;
+        padding: 4rem 2rem;
+        min-height: 60vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .offline-icon {
+        font-size: 4rem;
+        margin-bottom: 2rem;
+        color: var(--primary);
+    }
+    
+    .offline-title {
+        font-size: 2rem;
+        color: var(--dark);
+        margin-bottom: 1rem;
+    }
+    
+    .offline-message {
+        font-size: 1.1rem;
+        color: var(--text);
+        margin-bottom: 2rem;
+        max-width: 500px;
+    }
+</style>
+
+<div class="offline-container">
+    <div class="offline-icon">📶</div>
+    <h1 class="offline-title">You're Offline</h1>
+    <p class="offline-message">
+        Don't worry! You can still browse the content you've previously viewed. 
+        Once you're back online, you'll be able to book appointments and access all features.
+    </p>
+    <a href="{% url 'home' %}" class="btn">Try Again</a>
+</div>
+{% endblock %}
