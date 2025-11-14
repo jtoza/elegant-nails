@@ -175,15 +175,3 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = 'home'
 LOGIN_URL = '/login/'
 
-# DEVELOPMENT SETTINGS - Add this at the very end
-if DEBUG:
-    # Disable HTTPS in development
-    SECURE_SSL_REDIRECT = False
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
-    
-    # Force HTTP for development
-    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-    
-    # Also add this to help with static files
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
